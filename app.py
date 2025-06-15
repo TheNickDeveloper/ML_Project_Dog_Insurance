@@ -32,7 +32,7 @@ left_col, right_col = st.columns([1, 1])
 
 # ----- Form -----
 with left_col:
-    with st.form("pet_form"):
+    with st.form("pet_form",border=False):
         st.markdown("### 🐾 Pet Details")
         col1, col2 = st.columns(2)
 
@@ -57,11 +57,9 @@ with right_col:
     st.markdown("### 📋 Insurance Summary")
     hint_markdown = st.markdown(f"""
             <div style='background:#fff2cc; padding: 1rem; border-radius: 8px; margin-top:1rem;'>
-                <p>To estimate your insurance premium, we'll need to assess your dog's breed, age, and gender, along with their spay/neuter status and your current borough of residence.</p>
+                <p style='color: black;'>To estimate your insurance premium, we'll need to assess your dog's breed, age, and gender, along with their spay/neuter status and your current borough of residence.</p>
             </div>
                 """, unsafe_allow_html=True)
-    
-
     
     if submitted:
         hint_markdown.empty()
@@ -76,9 +74,9 @@ with right_col:
         premium_text = f"<span style='font-weight:bold; font-size:1.2rem;'>{premium_fee}</span>"
         rsult_markdown = st.markdown(f"""
             <div style='background:#fff2cc; padding: 1rem; border-radius: 8px; margin-top:1rem;'>
-                <p><strong>{pet_name}</strong> is a <strong>{age}-year-old {gender.lower()}</strong> <strong>{breed}</strong> living in <strong>{borough}</strong>.</p>
-                <p>Spayed/Neutered: <strong>{spay_neuter}</strong></p>
-                <p>⚠️ <strong>Estimated Biting Risk:</strong> {risk_text}</p>
-                <p>💰 <strong>Estimated Monthly Premium:</strong> ${premium_text}</p> 
+                <p style='color: black;'><strong>{pet_name}</strong> is a <strong>{age}-year-old {gender.lower()}</strong> <strong>{breed}</strong> living in <strong>{borough}</strong>.</p>
+                <p style='color: black;'>Spayed/Neutered: <strong>{spay_neuter}</strong></p>
+                <p style='color: black;'>⚠️ <strong>Estimated Biting Risk:</strong> {risk_text}</p>
+                <p style='color: black;'>💰 <strong>Estimated Monthly Premium:</strong> ${premium_text}</p> 
             </div>
                 """, unsafe_allow_html=True)
