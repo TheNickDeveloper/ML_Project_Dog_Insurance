@@ -1,82 +1,108 @@
+import math
+import pandas as pd
 import streamlit as st
-import random
+import joblib
 
-# ----- Page Setup -----
-st.set_page_config(page_title="Pawtection - Pet Insurance", layout="centered")
+def main():
+    # ----- Page Setup -----
+    st.set_page_config(page_title="Pawtection - Pet Insurance", layout="centered")
 
-# ----- Styling -----
-st.markdown("""
-    <style>
-    .big-title {
-        text-align: center;
-        font-size: 2.5rem;
-        color: #2c3e50;
-        margin-bottom: 0.2em;
-    }
-    .subtitle {
-        text-align: center;
-        font-size: 1.2rem;
-        color: #7f8c8d;
-        margin-bottom: 2rem;
-    }
-    </style>
-""", unsafe_allow_html=True)
+    # ----- Styling -----
+    st.markdown("""
+        <style>
+        .big-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 0.2em;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
-# ----- Header -----
-st.markdown("<div class='big-title'>🐶 Pawtection</div>", unsafe_allow_html=True)
-st.markdown("<div class='subtitle'>Your trusted third-party dog insurance – built to protect your furry friend 🐾</div>", unsafe_allow_html=True)
+    # ----- Header -----
+    st.markdown("<div class='big-title'>🐶 Pawtection</div>", unsafe_allow_html=True)
+    st.markdown("<div class='subtitle'>Your trusted third-party dog insurance – built to protect your furry friend 🐾</div>", unsafe_allow_html=True)
 
+    # ----- Layout Columns -----
+    left_col, right_col = st.columns([1, 1])
 
-# ----- Layout Columns -----
-left_col, right_col = st.columns([1, 1])
+    # ----- Form -----
+    with left_col:
+        with st.form("pet_form",border=False):
+            st.markdown("### 🐾 Pet Details")
+            form_col_left, form_col_right = st.columns(2)
 
-# ----- Form -----
-with left_col:
-    with st.form("pet_form",border=False):
-        st.markdown("### 🐾 Pet Details")
-        col1, col2 = st.columns(2)
+            with form_col_left:
+                isBite = st.selectbox("🩸 Bite Before", ["Yes", "No"])
+                breed = st.selectbox("🐕 Breed", ["German Shepherd","Pit Bull","Rottweiler","Bulldog","Siberian Husky","Mixed Breed","Others"])
+                age = st.selectbox("🎀 Age", list(range(1, 20)), format_func=lambda x: f"{x} years")
 
-        with col1:
-            pet_name = st.text_input("🐶 Pet Name", value="Saudi Rich")
-            breed = st.selectbox("🐕 Breed", ["Labrador", "Bulldog", "Poodle", "Mixed", "Other"])
-            age = st.selectbox("🎀 Age", list(range(0, 21)), format_func=lambda x: f"{x} years")
+            with form_col_right:
+                gender = st.selectbox("⚧️ Gender", ["Male", "Female"])
+                spay_neuter = st.selectbox("✂️ Spay/Neuter", ["Yes", "No"])
+                borough = st.selectbox("📍 Borough", ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island", "Others"])
 
-        with col2:
-            gender = st.selectbox("⚧️ Gender", ["Male", "Female"])
-            spay_neuter = st.selectbox("✂️ Spay/Neuter", ["Yes", "No"])
-            borough = st.selectbox("📍 Borough", ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"])
+            submitted = st.form_submit_button("🔍 Estimate My Premium")
 
+    # ----- Load Model -----
+    model = joblib.load("dog_bite_score_predictor.pkl")
 
-
-        st.markdown("</div>", unsafe_allow_html=True)
-        submitted = st.form_submit_button("🔍 Estimate My Premium")
-
-# ----- Output -----
-with right_col:
-
-    st.markdown("### 📋 Insurance Summary")
-    hint_markdown = st.markdown(f"""
-            <div style='background:#fff2cc; padding: 1rem; border-radius: 8px; margin-top:1rem;'>
-                <p style='color: black;'>To estimate your insurance premium, we'll need to assess your dog's breed, age, and gender, along with their spay/neuter status and your current borough of residence.</p>
-            </div>
-                """, unsafe_allow_html=True)
-    
-    if submitted:
-        hint_markdown.empty()
-        # Simulate risk and premium (you can replace this with real logic later)
-        biting_risk = random.randint(1, 10)
-        base_price = 30
-        premium_fee = base_price + (age * 1.5) + (biting_risk * 2)
+    # ----- Output -----
+    with right_col:
+        st.markdown("### 📋 Insurance Summary")
+        hint_markdown = st.markdown(f"""
+                <div style='background:#fff2cc; padding: 1rem; border-radius: 8px; margin-top:1rem;'>
+                    <p style='color: black;'>To estimate your insurance premium, we'll need to assess your dog's breed, age, and gender, along with their spay/neuter status and your current borough of residence.</p>
+                </div>
+                    """, unsafe_allow_html=True)
         
-        # Risk color logic
-        risk_color = "#27ae60" if biting_risk <= 3 else "#f39c12" if biting_risk <= 7 else "#e74c3c"
-        risk_text = f"<span style='font-weight:bold; color:{risk_color}; font-size:1.2rem;'>{biting_risk} / 10</span>"
-        premium_text = f"<span style='font-weight:bold; font-size:1.2rem;'>{premium_fee}</span>"
-        rsult_markdown = st.markdown(f"""
-            <div style='background:#fff2cc; padding: 1rem; border-radius: 8px; margin-top:1rem;'>
-                <p style='color: black;'><strong>{pet_name}</strong> is a <strong>{age}-year-old {gender.lower()}</strong> <strong>{breed}</strong> living in <strong>{borough}</strong>.</p>
-                <p style='color: black;'>Spayed/Neutered: <strong>{spay_neuter}</strong></p>
-                <p style='color: black;'>⚠️ <strong>Estimated Biting Risk:</strong> {risk_text}</p>
-                <p style='color: black;'>💰 <strong>Estimated Monthly Premium:</strong> ${premium_text}</p> 
-            </div>
-                """, unsafe_allow_html=True)
+        if submitted:
+            hint_markdown.empty()
+            # Simulate risk and premium (you can replace this with real logic later)
+            isBite_map = {"Yes": 1, "No": 0}
+            breed_map = {"German Shepherd":1,"Pit Bull":2,"Rottweiler":3,"Bulldog":4,"Siberian Husky":5,"Mixed Breed":6,"Others":7}
+            gender_map = {"Male": 1, "Female": 2}
+            spay_map = {"Yes": 1, "No": 0}
+            borough_map = {"Manhattan": 1, "Brooklyn": 6, "Queens": 4, "Bronx": 3, "Staten Island": 5, "Others": 2}
+
+            # Fallback for unknown breeds
+            encoded_breed = breed_map.get(breed, 7)
+            encoded_gender = gender_map.get(gender, 1)
+            encoded_spay = spay_map.get(spay_neuter, 0)
+            encoded_borough = borough_map.get(borough, 1)
+            encoded_isBite = isBite_map.get(isBite, 1)
+
+            new_data = pd.DataFrame({
+                'Breed': [encoded_breed],
+                'Age': [age],
+                'Gender': [encoded_gender],
+                'SpayNeuter': [encoded_spay],
+                'Borough': [encoded_borough],
+                'IsBite': [encoded_isBite]  # Always 1 to trigger bite risk estimation
+            })
+            biting_risk = int(model.predict(new_data)[0])
+            base_price = 66
+            premium_fee = math.ceil(base_price * (1 + (biting_risk / 100)))
+            
+            # Risk color logic
+            risk_color = "#27ae60" if biting_risk <= 30 else "#f39c12" if biting_risk <= 70 else "#e74c3c"
+            risk_text = f"<span style='font-weight:bold; color:{risk_color}; font-size:1.2rem;'>{biting_risk} / 100</span>"
+            premium_text = f"<span style='font-weight:bold; font-size:1.2rem;'>{premium_fee}</span>"
+            rsult_markdown = st.markdown(f"""
+                <div style='background:#fff2cc; padding: 1rem; border-radius: 8px; margin-top:1rem;'>
+                    <p style='color: black;'>Your dog is a <strong>{age}-year-old {gender.lower()}</strong> <strong>{breed}</strong> living in <strong>{borough}</strong> borough.</p>
+                    <p style='color: black;'>Spayed/Neutered: <strong>{spay_neuter}</strong></p>
+                    <p style='color: black;'>Bite before: <strong>{isBite}</strong></p>
+                    <p style='color: black;'>⚠️ <strong>Estimated Biting Risk:</strong> {risk_text}</p>
+                    <p style='color: black;'>💰 <strong>Estimated Monthly Premium:</strong> ${premium_text}</p> 
+                </div>
+                    """, unsafe_allow_html=True)
+            
+if __name__ == "__main__":
+    main()
