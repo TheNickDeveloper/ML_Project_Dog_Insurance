@@ -58,7 +58,7 @@ def main():
         st.markdown("### 📋 Insurance Summary")
         hint_markdown = st.markdown(f"""
                 <div style='background:#fff2cc; padding: 1rem; border-radius: 8px; margin-top:1rem;'>
-                    <p style='color: black;'>To estimate your insurance premium, we'll need to assess your dog's breed, age, and gender, along with their spay/neuter status and your current borough of residence.</p>
+                    <p style='color: black;'>To estimate your insurance premium, we'll need to assess your dog's breed, age, if have bitie history, and gender along with their spay/neuter status and your current borough of residence.</p>
                 </div>
                     """, unsafe_allow_html=True)
         
