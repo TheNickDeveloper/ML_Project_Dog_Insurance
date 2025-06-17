@@ -87,7 +87,7 @@ def main():
                 'IsBite': [encoded_isBite]  # Always 1 to trigger bite risk estimation
             })
             biting_risk = int(model.predict(new_data)[0])
-            base_price = 66
+            base_price = 46
             premium_fee = math.ceil(base_price * (1 + (biting_risk / 100)))
             
             # Risk color logic
