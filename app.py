@@ -2,6 +2,7 @@ import math
 import pandas as pd
 import streamlit as st
 import joblib
+import base64
 
 def main():
     # ----- Page Setup -----
@@ -10,6 +11,13 @@ def main():
     # ----- Styling -----
     st.markdown("""
         <style>
+        .stApp {
+            background-image: url("dog.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
         .big-title {
             text-align: center;
             font-size: 2.5rem;
@@ -28,6 +36,8 @@ def main():
     # ----- Header -----
     st.markdown("<div class='big-title'>🐶 Pawtection</div>", unsafe_allow_html=True)
     st.markdown("<div class='subtitle'>Your trusted third-party dog insurance – built to protect your furry friend 🐾</div>", unsafe_allow_html=True)
+
+    set_background("dog_bg.png")
 
     # ----- Layout Columns -----
     left_col, right_col = st.columns([1, 1])
@@ -107,5 +117,37 @@ def main():
                     </div>
                         """, unsafe_allow_html=True)
             
+
+                # # Create a placeholder to hold the image temporarily
+                # image_placeholder = st.empty()
+
+                # # Show the image
+                # image_placeholder.image("dog.gif", width=300, caption="Thanks for submitting! 🐾")
+
+                # # Pause for 3 seconds (or however long you want it to appear)
+                # time.sleep(2)
+
+                # # Clear the image
+                # image_placeholder.empty()
+
+def set_background(image_file):
+    with open(image_file, "rb") as file:
+        encoded = base64.b64encode(file.read()).decode()
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("data:image/jpeg;base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
 if __name__ == "__main__":
     main()
+
