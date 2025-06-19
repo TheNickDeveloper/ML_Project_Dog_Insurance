@@ -77,6 +77,7 @@ def main():
                 st.warning("🚫 Please make sure all dropdown fields are selected before estimating the premium.")
             else:
                 hint_markdown.empty()
+                
                 # Simulate risk and premium (you can replace this with real logic later)
                 isBite_map = {"Yes": 1, "No": 0}
                 breed_map = {"German Shepherd":1,"Pit Bull":2,"Rottweiler":3,"Bulldog":4,"Siberian Husky":5,"Mixed Breed":6,"Others":7}
@@ -100,7 +101,7 @@ def main():
                     'IsBite': [encoded_isBite]  # Always 1 to trigger bite risk estimation
                 })
                 biting_risk = int(model.predict(new_data)[0])
-                base_price = 46
+                base_price = 52
                 premium_fee = math.ceil(base_price * (1 + (biting_risk / 100)))
                 
                 # Risk color logic
@@ -117,19 +118,6 @@ def main():
                     </div>
                         """, unsafe_allow_html=True)
             
-
-                # # Create a placeholder to hold the image temporarily
-                # image_placeholder = st.empty()
-
-                # # Show the image
-                # image_placeholder.image("dog.gif", width=300, caption="Thanks for submitting! 🐾")
-
-                # # Pause for 3 seconds (or however long you want it to appear)
-                # time.sleep(2)
-
-                # # Clear the image
-                # image_placeholder.empty()
-
 def set_background(image_file):
     with open(image_file, "rb") as file:
         encoded = base64.b64encode(file.read()).decode()
