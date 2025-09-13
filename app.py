@@ -37,8 +37,6 @@ def main():
     st.markdown("<div class='big-title'>🐶 Pawtection</div>", unsafe_allow_html=True)
     st.markdown("<div class='subtitle'>Your trusted third-party dog insurance – built to protect your furry friend 🐾</div>", unsafe_allow_html=True)
 
-    set_background("dog_bg.png")
-
     # ----- Layout Columns -----
     left_col, right_col = st.columns([1, 1])
 
@@ -138,4 +136,5 @@ def set_background(image_file):
 
 if __name__ == "__main__":
     main()
+
 
