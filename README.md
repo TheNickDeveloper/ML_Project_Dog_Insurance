@@ -2,9 +2,17 @@
 
 This Machine Learning project demonstrates how data science and interactive web applications can be applied to real-world decision-making—in this case, estimating third-party insurance premiums for dogs based on various risk factors.
 
+---
+
 ## 🌐 Live Demo
 
 🔗 [Try it on Streamlit](https://hkuptmbapawtection.streamlit.app/)
+
+---
+
+## 🪴 Application UIUX
+
+![image](https://github.com/TheNickDeveloper/ML-Dog-Insurance-Estimator/blob/main/application_uiux.png)
 
 ---
 
